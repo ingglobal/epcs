@@ -293,7 +293,7 @@ $(function(){
         return false;
     });
 
-    // 생산계회ID(라인설비)찾기 버튼 클릭
+    // 생산계회ID(라인설비)찾기 버튼 클릭..
 	$("#btn_orp").click(function(e) {
 		e.preventDefault();
         //수주선택을 실행하지 않으면 선택불가
