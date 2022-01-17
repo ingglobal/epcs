@@ -36,10 +36,10 @@ if( is_array($g5['set_taxonomies_value']) ) {
         @$term_cache_filetime = filemtime($term_cache_file);
         if( !file_exists($term_cache_file) || $term_cache_filetime < (G5_SERVER_TIME - 3600*$term_cache_time) ) {
             @unlink($term_cache_file);
-            
+
             $g5[$key] = array();
             // 조직구조 추출
-            $sql = "SELECT 
+            $sql = "SELECT
                         trm_idx term_idx
                         , GROUP_CONCAT(name) term_name
                         , trm_name2 trm_name2
@@ -79,7 +79,7 @@ if( is_array($g5['set_taxonomies_value']) ) {
                                 AND term.trm_taxonomy = '".$key."'
                                 AND parent.trm_taxonomy = '".$key."'
                                 AND term.trm_status in ('ok','hide') AND parent.trm_status in ('ok','hide')
-                                
+
                                 GROUP BY term.trm_idx
                             ORDER BY term.trm_left
                             )
@@ -108,10 +108,10 @@ if( is_array($g5['set_taxonomies_value']) ) {
                                 AND term.trm_taxonomy = '".$key."'
                                 AND parent.trm_taxonomy = '".$key."'
                                 AND term.trm_status in ('ok','hide') AND parent.trm_status in ('ok','hide')
-                                
+
                             GROUP BY parent.trm_idx
                             ORDER BY parent.trm_left
-                            ) 
+                            )
                         ) db_table
                     GROUP BY trm_idx
                     ORDER BY trm_left
@@ -142,20 +142,20 @@ if( is_array($g5['set_taxonomies_value']) ) {
                 $g5[$key.'_uptop_idx'][$row['term_idx']] = $row['uptop_idx'];
                 //-- 카테고리 lefa_node 여부
                 $g5[$key.'_lefa_yn'][$row['term_idx']] = $row['leaf_node_yn'];
-                
+
                 // 추가 부분 unserialize
                 $unser = unserialize(stripslashes($row['trm_more']));
                 if( is_array($unser) ) {
                     foreach ($unser as $key1=>$value1) {
                         $row[$key1] = htmlspecialchars($value1, ENT_QUOTES | ENT_NOQUOTES); // " 와 ' 를 html code 로 변환
-                    }    
+                    }
                 }
                 // 삭제조직코드 (공백 제거)
                 if($row['trash_idxs'])
                     $g5[$key.'_trash_idxs'][$row['term_idx']] = ','.preg_replace("/\s+/", "", $row['trash_idxs']);
-                
+
             }
-			
+
             // 캐시파일 생성 (다음 접속을 위해서 생성해 둔다.)
             $handle = fopen($term_cache_file, 'w');
             $term_content = "<?php\n";
@@ -192,6 +192,7 @@ if( is_array($g5['set_taxonomies_value']) ) {
             ${$key.'_radio_options'} .= '<label for="set_'.$key.'_idx_'.$g5[$key][$i]['term_idx'].'" class="set_'.$key.'_idx"><input type="radio" id="set_'.$key.'_idx_'.$g5[$key][$i]['term_idx'].'" name="set_'.$key.'_idx" value="'.$g5[$key][$i]['term_idx'].'">'.$g5[$key][$i]['term_name'].'</label>';
             ${$key.'_checkbox_options'} .= '<label for="set_'.$key.'_idx_'.$g5[$key][$i]['term_idx'].'" class="set_'.$key.'_idx"><input type="checkbox" id="set_'.$key.'_idx_'.$g5[$key][$i]['term_idx'].'" name="set_'.$key.'_idx[]" value="'.$g5[$key][$i]['term_idx'].'">'.$g5[$key][$i]['term_name'].'</label>';
         }
+		//echo $line_form_options;exit;
     }
 }
 
@@ -205,10 +206,10 @@ if( is_array($g5['set_customer_category']) || $_SESSION['ss_com_idx'] ) {
         @$term_cache_filetime = filemtime($term_cache_file);
         if( !file_exists($term_cache_file) || $term_cache_filetime < (G5_SERVER_TIME - 3600*$term_cache_time) ) {
             @unlink($term_cache_file);
-            
+
             $g5[$key] = array();
             // 조직구조 추출
-            $sql = "SELECT 
+            $sql = "SELECT
                         trm_idx term_idx
                         , GROUP_CONCAT(name) term_name
                         , trm_name2 trm_name2
@@ -250,7 +251,7 @@ if( is_array($g5['set_customer_category']) || $_SESSION['ss_com_idx'] ) {
                                 AND term.trm_taxonomy = '".$value."'
                                 AND parent.trm_taxonomy = '".$value."'
                                 AND term.trm_status in ('ok','hide') AND parent.trm_status in ('ok','hide')
-                                
+
                                 GROUP BY term.trm_idx
                             ORDER BY term.trm_left
                             )
@@ -279,10 +280,10 @@ if( is_array($g5['set_customer_category']) || $_SESSION['ss_com_idx'] ) {
                                 AND term.trm_taxonomy = '".$value."'
                                 AND parent.trm_taxonomy = '".$value."'
                                 AND term.trm_status in ('ok','hide') AND parent.trm_status in ('ok','hide')
-                                
+
                             GROUP BY parent.trm_idx
                             ORDER BY parent.trm_left
-                            ) 
+                            )
                         ) db_table
                     GROUP BY trm_idx
                     ORDER BY trm_left
@@ -311,9 +312,9 @@ if( is_array($g5['set_customer_category']) || $_SESSION['ss_com_idx'] ) {
                 $g5[$value.'_uptop_idx'][$row['term_idx']] = $row['uptop_idx'];
                 //-- 카테고리 lefa_node 여부
                 $g5[$value.'_lefa_yn'][$row['term_idx']] = $row['leaf_node_yn'];
-                
+
             }
-			
+
             // 캐시파일 생성 (다음 접속을 위해서 생성해 둔다.)
             $handle = fopen($term_cache_file, 'w');
             $term_content = "<?php\n";
@@ -357,7 +358,7 @@ for ($j=0;$j<sizeof($g5['setting_bo_tables']);$j++) {
     @$bsetting_cache_filetime = filemtime($bsetting_cache_file);
     if( !file_exists($bsetting_cache_file) || $bsetting_cache_filetime < (G5_SERVER_TIME - 3600*$term_cache_time) ) {
         @unlink($bsetting_cache_file);
-        
+
         $g5['board'][$key] = array();
         $board = get_board_db($key, true);
         $bo_subject = get_text($board['bo_subject']);
@@ -383,9 +384,9 @@ for ($j=0;$j<sizeof($g5['setting_bo_tables']);$j++) {
                     $g5['board'][$key.'_'.$key2][$row['wr_id']] = $value2;
                 }
             }
-            
+
         }
-		
+
         // 캐시파일 생성 (다음 접속을 위해서 생성해 둔다.)
         $handle = fopen($bsetting_cache_file, 'w');
         $bset_content = "<?php\n";
@@ -408,17 +409,17 @@ for ($j=0;$j<sizeof($g5['setting_bo_tables']);$j++) {
         // 캐시 파일 내부에 배열로 department 변수 설정되어 있음
         include($bsetting_cache_file);
     }
-    
+
     // 분류 카테고리 옵션 생성 (다운idxs 포함해서 변수 넘길 때)
     for($i=0; $i<sizeof($g5['board'][$key]); $i++) {
         $g5['board'][$key.'_form_options'] .= '<option value="'.$g5['board'][$key][$i]['wr_id'].'">'.$g5['board'][$key][$i]['wr_subject'].'</option>';
         $g5['board'][$key.'_radio_options'] .= '<label for="set_'.$key.'_idx_'.$g5['board'][$key][$i]['wr_id'].'" class="set_'.$key.'_idx"><input type="radio" id="set_'.$key.'_idx_'.$g5['board'][$key][$i]['wr_id'].'" name="set_'.$key.'_idx" value="'.$g5['board'][$key][$i]['wr_id'].'">'.$g5['board'][$key][$i]['wr_subject'].'</label>';
         $g5['board'][$key.'_checkbox_options'] .= '<label for="set_'.$key.'_idx_'.$g5['board'][$key][$i]['wr_id'].'" class="set_'.$key.'_idx"><input type="checkbox" id="set_'.$key.'_idx_'.$g5['board'][$key][$i]['wr_id'].'" name="set_'.$key.'_idx[]" value="'.$g5['board'][$key][$i]['wr_id'].'">'.$g5['board'][$key][$i]['wr_subject'].'</label>';
-    }   
-    
+    }
+
 }
 //print_r2($g5['board']);
-//exit;   
+//exit;
 
 $mms_code_file = G5_DATA_PATH.'/cache/mms-code.php';
 if( file_exists($mms_code_file) ) {
@@ -437,7 +438,7 @@ if($_SESSION['ss_com_idx']) {
     @$customer_cache_filetime = filemtime($customer_cache_file);
     if( !file_exists($customer_cache_file) || $customer_cache_filetime < (G5_SERVER_TIME - 3600*$term_cache_time) ) {
         @unlink($customer_cache_file);
-        
+
         $g5['customer'] = array();
         $sql = " SELECT com_idx, com_name, com_names, com_status FROM {$g5['company_table']} WHERE com_level = 2 AND com_idx_par = '".$_SESSION['ss_com_idx']."' ";
         $result = sql_query($sql,1);
@@ -445,7 +446,7 @@ if($_SESSION['ss_com_idx']) {
             $g5['customer'][$row['com_idx']] = $row;
             unset($g5['customer'][$row['com_idx']]['com_idx']);
         }
-        
+
         // 캐시파일 생성 (다음 접속을 위해서 생성해 둔다.)
         $handle = fopen($customer_cache_file, 'w');
         $customer_content = "<?php\n";
@@ -659,7 +660,7 @@ foreach ($set_values as $set_value) {
 	$g5['set_data_group_radios'] .= '<label for="set_data_group_'.$key.'" class="set_data_group"><input type="radio" id="set_data_group_'.$key.'" name="set_data_group" value="'.$key.'">'.$value.'</label>';
 	$g5['set_data_group_options'] .= '<option value="'.trim($key).'">'.trim($value).' ('.trim($key).')</option>';
 	$g5['set_data_group_value_options'] .= '<option value="'.trim($key).'">'.trim($value).'</option>';
-    
+
     // 데이타 그룹별 그래프 디폴트값 추출, $g5['set_graph_run']['default1'], $g5['set_graph_err']['default4'] 등과 같은 배열값으로 디폴트값 추출됨
     $set_values1 = explode(',', preg_replace("/\s+/", "", $g5['setting']['set_graph_'.$key]));
     for($i=0;$i<sizeof($set_values1);$i++) {
@@ -671,7 +672,7 @@ unset($set_values);unset($set_value);
 
 // 단위별(분,시,일,주,월,년) 초변환수
 // 첫번째 변수 = 단위별 초단위 전환값
-// 두번째 변수 = 종료일(or시작일)계산시 선택단위, 0이면 기존 선택된 단위값, 아니면 해당숫자 
+// 두번째 변수 = 종료일(or시작일)계산시 선택단위, 0이면 기존 선택된 단위값, 아니면 해당숫자
 $seconds = array(
     "daily"=>array(86400,1)
     ,"weekly"=>array(604800,1)
