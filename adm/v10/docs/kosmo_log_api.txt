@@ -166,19 +166,19 @@ function u_member_login_check()함수 안 제일 하단에 아래 소스 추가
 send_kosmo_log();
 
 ###################################################################################
-_top_menu_stat.php
+_top_menu_setting.php
 
 에 아래 메뉴소스를 추가/수정해라
 
 // 최고관리자인 경우만
 if($member['mb_level']>=10) {
-    // $sub_title_list = '
-    //     <a href="./stat_setting_goal.php" class="btn_top_menu '.$active_stat_setting_goal.'">영업목표설정</a>
-    // ';
-	$sub_title_list = '
+    $sub_title_list = ' <a href="'.G5_ADMIN_URL.'/shop_admin/configform.php" class="btn_top_menu '.$active_term_list.'">쇼핑몰설정</a>
+                        <a href="'.G5_ADMIN_URL.'/shop_admin/bannerlist.php" class="btn_top_menu '.$active_order_list.'">배너관리</a>
+    ';
+    $sub_title_list .= '
         <a href="./stat_user_log.php" class="btn_top_menu '.$active_stat_user_log.'">사용자로그통계</a>
     ';
 }
 
 ###################################################################################
-stat_user_log.php 파일 생성( ierp  참고 adm / v10 /  )
+stat_user_log.php 파일 생성( bogwang  참고 adm / v10 /  )
